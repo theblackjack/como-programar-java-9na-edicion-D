@@ -1,0 +1,18 @@
+# Ignorar Carpetas y Archivos
+
+Casos de Estudio/
+Codigo Ejemplo/
+
+
+# Ignorar archivos creados por eclipse
+
+# inorados en la carpeta del ejercicio
+.settings/
+bin/
+.classpath
+.project
+
+# ignorados en la carpeta principal
+.metadata/
+.recommenders/
+.RemoteSystemsTempFiles/
