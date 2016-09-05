@@ -127,9 +127,29 @@ public class PaseoDeTortuga
 		
 	}
 	
+	public void AjustePosicional() 
+	{
+		if ( actualFrente == Frente.ESTE || actualFrente == Frente.OESTE ) 
+		{
+			if ( filActual > 0 ) 
+			{
+				filActual--;
+			}			
+		}
+		else if ( actualFrente == Frente.SUR || actualFrente == Frente.NORTE )
+		{
+			if ( colActual > 0 ) 
+			{
+				colActual--;
+			}						
+		}
+		
+	}
 	
 	public void mover( int pasos ) 
-	{								// falta ajustar
+	{	
+		AjustePosicional();			
+		
 		int fila_temp = filActual;
 		int col_temp = colActual;
 				
@@ -147,9 +167,9 @@ public class PaseoDeTortuga
 				{
 					colActual++;
 				}
-			}			
-//			colActual += col_temp;
-			break;
+			}		
+//			colActual++;			// re-ajuste
+			break;			
 		case OESTE:
 			int topeO = colActual - pasos;
 			for (int c = col_temp; c > topeO; c--) 
@@ -164,7 +184,7 @@ public class PaseoDeTortuga
 					colActual--;
 				}
 			}
-//			colActual -= col_temp;
+//			colActual++;			// re-ajuste
 			break;
 		case SUR:
 			int topeS = filActual + pasos;
@@ -180,7 +200,6 @@ public class PaseoDeTortuga
 					filActual++;
 				}
 			}
-//			filActual += fila_temp;
 			break;
 		case NORTE:
 			int topeN = filActual - pasos;
@@ -196,7 +215,6 @@ public class PaseoDeTortuga
 					filActual--;
 				}
 			}
-//			filActual -= fila_temp;
 			break;
 		}						
 	}	
@@ -235,10 +253,10 @@ public class PaseoDeTortuga
 		return espacio;		
 	}
 	
-	// metodo auxiliar para depuracion
+	// metodo auxiliar para seguimiento de valores
 	public void Estatus( ) 
 	{
-		System.out.printf("\n\nPosicion: (%d,%d) \nDireccion: %s\nPluma: %s\n",
+		System.out.printf("\n\nPosicion: (F=%d,C=%d) \nDireccion: %s\nPluma: %s\n",
 				filActual,colActual,actualFrente,pluma ? "Abajo":"Arriba");
 				
 	}
