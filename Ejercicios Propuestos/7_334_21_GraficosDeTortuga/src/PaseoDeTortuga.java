@@ -73,7 +73,7 @@ public class PaseoDeTortuga
 			System.out.print("\nCuantas casillas: ");
 			p = lee.nextInt();
 			
-			if ( EspacioSuficiente(p) ) 
+			if ( mover(p) ) 	// automaticamente se produce el desplazamiento
 			{
 				sigue = false;
 			} 
@@ -83,9 +83,7 @@ public class PaseoDeTortuga
 			}						
 			
 		} while (sigue);
-		
-		mover(p);
-		
+				
 	}
 	
 	public void Gira( int d )					
@@ -133,125 +131,141 @@ public class PaseoDeTortuga
 		{
 			if ( filActual > 0 ) 
 			{
-				filActual--;
-			}			
+				if ( piso[filActual-1][colActual] != 0 ) 
+				{
+					filActual--;
+				}
+				else if ( piso[filActual+1][colActual] != 0 ) 
+				{
+					filActual++;
+				}				
+			}
 		}
 		else if ( actualFrente == Frente.SUR || actualFrente == Frente.NORTE )
 		{
 			if ( colActual > 0 ) 
 			{
-				colActual--;
-			}						
+				if ( piso[filActual][colActual-1] != 0 ) 
+				{
+					colActual--;
+				}						
+				else if ( piso[filActual][colActual+1] != 0 ) 
+				{
+					colActual++;				
+				}				
+			}
 		}
 		
 	}
 	
-	public void mover( int pasos ) 
+	public boolean mover( int pasos ) 
 	{	
-		AjustePosicional();			
+		boolean hecho = false;
+		//AjustePosicional();			
 		
 		int fila_temp = filActual;
 		int col_temp = colActual;
 				
 		switch (actualFrente) {
 		case ESTE:
-			int topeE = colActual + pasos;
-			for (int c = col_temp; c < topeE; c++) 
-			{
-				if (pluma) 
-				{
-					piso[filActual][c] = 1;
-					colActual++;					
-				} 
-				else 
-				{
-					colActual++;
-				}
-			}		
-//			colActual++;			// re-ajuste
-			break;			
-		case OESTE:
-			int topeO = colActual - pasos;
-			for (int c = col_temp; c > topeO; c--) 
-			{
-				if (pluma) 
-				{
-					piso[filActual][c] = 1;
-					colActual--;					
-				} 
-				else 
-				{
-					colActual--;
-				}
-			}
-//			colActual++;			// re-ajuste
-			break;
-		case SUR:
-			int topeS = filActual + pasos;
-			for (int f = fila_temp; f < topeS; f++) 
-			{
-				if (pluma) 
-				{
-					piso[f][colActual] = 1;
-					filActual++;
-				} 
-				else 
-				{
-					filActual++;
-				}
-			}
-			break;
-		case NORTE:
-			int topeN = filActual - pasos;
-			for (int f = fila_temp; f > topeN; f--) 
-			{
-				if (pluma) 
-				{
-					piso[f][colActual] = 1;
-					filActual--;					
-				} 
-				else 
-				{
-					filActual--;
-				}
-			}
-			break;
-		}						
-	}	
-	
-	public boolean EspacioSuficiente( int pasos ) 
-	{
-		boolean espacio = false;
-		
-		switch (actualFrente) {
-		case ESTE:					
 			if ( colActual + pasos <= piso.length ) 
 			{
-				espacio = true;
+				int topeE = colActual + pasos;
+				for (int c = col_temp; c < topeE; c++) 
+				{
+					if (pluma) 
+					{
+						piso[filActual][c] = 1;
+					} 
+					colActual++;
+				}
+				hecho = true;
 			}
-			break;
+			break;			
 		case OESTE:
-			if ( colActual - pasos >= 0 ) 
+			if ( colActual - pasos >= 0 )
 			{
-				espacio = true;
+				int topeO = colActual - pasos;
+				for (int c = col_temp; c > topeO; c--) 
+				{
+					if (pluma) 
+					{
+						piso[filActual][c] = 1;
+					} 
+					colActual--;
+				}
+				hecho = true;
 			}
 			break;
 		case SUR:
-			if ( filActual + pasos <= piso.length ) 
+			if ( filActual + pasos <= piso.length )
 			{
-				espacio = true;
+				int topeS = filActual + pasos;
+				for (int f = fila_temp; f < topeS; f++) 
+				{
+					if (pluma) 
+					{
+						piso[f][colActual] = 1;
+						filActual++;
+					}
+					filActual++;
+				}
+				hecho = true;
 			}
 			break;
 		case NORTE:
-			if ( filActual - pasos >= 0 ) 
+			if ( filActual - pasos >= 0 )
 			{
-				espacio = true;
-			}			
+				int topeN = filActual - pasos;
+				for (int f = fila_temp; f > topeN; f--) 
+				{
+					if (pluma) 
+					{
+						piso[f][colActual] = 1;
+					} 
+					filActual--;				
+				}
+				hecho = true;
+			}
 			break;
-		}		
+		}
 		
-		return espacio;		
-	}
+		return hecho;
+	}	
+	
+//	public boolean EspacioSuficiente( int pasos ) 
+//	{
+//		boolean espacio = false;
+//		
+//		switch (actualFrente) {
+//		case ESTE:					
+//			if ( colActual + pasos <= piso.length ) 
+//			{
+//				espacio = true;
+//			}
+//			break;
+//		case OESTE:
+//			if ( colActual - pasos >= 0 ) 
+//			{
+//				espacio = true;
+//			}
+//			break;
+//		case SUR:
+//			if ( filActual + pasos <= piso.length ) 
+//			{
+//				espacio = true;
+//			}
+//			break;
+//		case NORTE:
+//			if ( filActual - pasos >= 0 ) 
+//			{
+//				espacio = true;
+//			}			
+//			break;
+//		}		
+//		
+//		return espacio;		
+//	}
 	
 	// metodo auxiliar para seguimiento de valores
 	public void Estatus( ) 
