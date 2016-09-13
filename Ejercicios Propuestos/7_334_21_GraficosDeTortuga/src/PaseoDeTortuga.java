@@ -13,6 +13,7 @@ public class PaseoDeTortuga
 	enum Frente { NORTE, SUR, ESTE, OESTE};		// Direccion que apunta
 	
 	Frente actualFrente = Frente.ESTE;
+	Frente anteriorFrente = actualFrente;
 	Scanner lee = new Scanner(System.in);
 	
 	
@@ -127,153 +128,107 @@ public class PaseoDeTortuga
 	
 	public void AjustePosicional() 
 	{
-		if ( actualFrente == Frente.ESTE || actualFrente == Frente.OESTE ) 
-		{
-			if ( filActual > 0 ) 
-			{
-				if ( piso[filActual-1][colActual] != 0 ) 
-				{
-					filActual--;
-				}
-				else if ( piso[filActual+1][colActual] != 0 ) 
-				{
-					filActual++;
-				}				
-			}
+		if ( actualFrente == Frente.ESTE && anteriorFrente == Frente.ESTE && colActual != 0 )
+		{	
+			colActual++;		
 		}
-		else if ( actualFrente == Frente.SUR || actualFrente == Frente.NORTE )
-		{
-			if ( colActual > 0 ) 
-			{
-				if ( piso[filActual][colActual-1] != 0 ) 
-				{
-					colActual--;
-				}						
-				else if ( piso[filActual][colActual+1] != 0 ) 
-				{
-					colActual++;				
-				}				
-			}
+		else if ( actualFrente == Frente.NORTE && anteriorFrente == Frente.NORTE )
+		{	
+			filActual--;		
 		}
+		else if ( actualFrente == Frente.SUR && anteriorFrente == Frente.SUR && filActual != 0 )
+		{	
+			filActual++;		
+		}
+		else if ( actualFrente == Frente.OESTE && anteriorFrente == Frente.OESTE )
+		{	
+			colActual--;		
+		}		
 		
+	
 	}
 	
 	public boolean mover( int pasos ) 
 	{	
 		boolean hecho = false;
-		//AjustePosicional();			
 		
-		int fila_temp = filActual;
-		int col_temp = colActual;
-				
+		AjustePosicional();			
+										
 		switch (actualFrente) {
 		case ESTE:
-			if ( colActual + pasos <= piso.length ) 
-			{
+			if ( colActual + pasos <= piso.length )		// piso.length = 20 
+			{				
 				int topeE = colActual + pasos;
-				for (int c = col_temp; c < topeE; c++) 
-				{
+				for ( int c = colActual; c < topeE; c++) 
+				{					
 					if (pluma) 
 					{
 						piso[filActual][c] = 1;
-					} 
-					colActual++;
+					}	System.out.print(" "+c);				
 				}
 				hecho = true;
+				colActual = topeE-1;
 			}
 			break;			
 		case OESTE:
 			if ( colActual - pasos >= 0 )
 			{
+				
 				int topeO = colActual - pasos;
-				for (int c = col_temp; c > topeO; c--) 
+				for ( int c = colActual; c >= topeO; c--) 
 				{
 					if (pluma) 
 					{
 						piso[filActual][c] = 1;
-					} 
-					colActual--;
+					}	System.out.print(" "+c);
 				}
 				hecho = true;
+				colActual = topeO;
 			}
 			break;
 		case SUR:
 			if ( filActual + pasos <= piso.length )
-			{
+			{				
 				int topeS = filActual + pasos;
-				for (int f = fila_temp; f < topeS; f++) 
+				for ( int f = filActual; f < topeS; f++) 
 				{
 					if (pluma) 
 					{
-						piso[f][colActual] = 1;
-						filActual++;
-					}
-					filActual++;
+						piso[f][colActual] = 1;						
+					}	System.out.print(" "+f);				
 				}
 				hecho = true;
+				filActual = topeS-1;				
 			}
 			break;
 		case NORTE:
 			if ( filActual - pasos >= 0 )
-			{
+			{				
 				int topeN = filActual - pasos;
-				for (int f = fila_temp; f > topeN; f--) 
+				for ( int f = filActual; f >= topeN; f--) 
 				{
 					if (pluma) 
 					{
 						piso[f][colActual] = 1;
-					} 
-					filActual--;				
+					}	System.out.print(" "+f);								
 				}
 				hecho = true;
+				filActual = topeN;
 			}
 			break;
 		}
 		
+		anteriorFrente = actualFrente;
 		return hecho;
 	}	
-	
-//	public boolean EspacioSuficiente( int pasos ) 
-//	{
-//		boolean espacio = false;
-//		
-//		switch (actualFrente) {
-//		case ESTE:					
-//			if ( colActual + pasos <= piso.length ) 
-//			{
-//				espacio = true;
-//			}
-//			break;
-//		case OESTE:
-//			if ( colActual - pasos >= 0 ) 
-//			{
-//				espacio = true;
-//			}
-//			break;
-//		case SUR:
-//			if ( filActual + pasos <= piso.length ) 
-//			{
-//				espacio = true;
-//			}
-//			break;
-//		case NORTE:
-//			if ( filActual - pasos >= 0 ) 
-//			{
-//				espacio = true;
-//			}			
-//			break;
-//		}		
-//		
-//		return espacio;		
-//	}
-	
+		
 	// metodo auxiliar para seguimiento de valores
 	public void Estatus( ) 
 	{
 		System.out.printf("\n\nPosicion: (F=%d,C=%d) \nDireccion: %s\nPluma: %s\n",
-				filActual,colActual,actualFrente,pluma ? "Abajo":"Arriba");
-				
+				filActual,colActual,actualFrente,pluma ? "Abajo":"Arriba");		
 	}
+	// metodo auxiliar para seguimiento de valores
 	
 	public void MostrarDibujo() 
 	{
