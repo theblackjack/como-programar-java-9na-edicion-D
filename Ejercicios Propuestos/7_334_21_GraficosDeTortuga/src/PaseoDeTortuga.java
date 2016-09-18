@@ -1,6 +1,8 @@
 import java.util.Random;
 import java.util.Scanner;
 
+import org.w3c.dom.css.ElementCSSInlineStyle;
+
 public class PaseoDeTortuga 
 {
 	Random nAleatorio = new Random();
@@ -81,6 +83,7 @@ public class PaseoDeTortuga
 			else 
 			{
 				System.out.println("\nExcede las casillas disponibles! Ingrese un valor menor!");
+				System.out.printf("(F=%d , C=%d)\n",filActual,colActual);
 			}						
 			
 		} while (sigue);
@@ -122,44 +125,22 @@ public class PaseoDeTortuga
 				actualFrente = Frente.OESTE;
 				break;		
 			}
-		}		
-		
-	}
-	
-	public void AjustePosicional() 
-	{
-		if ( actualFrente == Frente.ESTE && anteriorFrente == Frente.ESTE && colActual != 0 )
-		{	
-			colActual++;		
 		}
-		else if ( actualFrente == Frente.NORTE && anteriorFrente == Frente.NORTE )
-		{	
-			filActual--;		
-		}
-		else if ( actualFrente == Frente.SUR && anteriorFrente == Frente.SUR && filActual != 0 )
-		{	
-			filActual++;		
-		}
-		else if ( actualFrente == Frente.OESTE && anteriorFrente == Frente.OESTE )
-		{	
-			colActual--;		
-		}		
-		
-	
+
 	}
 	
 	public boolean mover( int pasos ) 
 	{	
 		boolean hecho = false;
 		
-		AjustePosicional();			
-										
+		pasos--;
+		
 		switch (actualFrente) {
 		case ESTE:
 			if ( colActual + pasos <= piso.length )		// piso.length = 20 
 			{				
 				int topeE = colActual + pasos;
-				for ( int c = colActual; c < topeE; c++) 
+				for ( int c = colActual; c <= topeE; c++) 
 				{					
 					if (pluma) 
 					{
@@ -167,13 +148,12 @@ public class PaseoDeTortuga
 					}	System.out.print(" "+c);				
 				}
 				hecho = true;
-				colActual = topeE-1;
+				colActual = topeE;
 			}
 			break;			
-		case OESTE:
+		case OESTE:			
 			if ( colActual - pasos >= 0 )
-			{
-				
+			{	
 				int topeO = colActual - pasos;
 				for ( int c = colActual; c >= topeO; c--) 
 				{
@@ -190,7 +170,7 @@ public class PaseoDeTortuga
 			if ( filActual + pasos <= piso.length )
 			{				
 				int topeS = filActual + pasos;
-				for ( int f = filActual; f < topeS; f++) 
+				for ( int f = filActual; f <= topeS; f++) 
 				{
 					if (pluma) 
 					{
@@ -198,10 +178,10 @@ public class PaseoDeTortuga
 					}	System.out.print(" "+f);				
 				}
 				hecho = true;
-				filActual = topeS-1;				
+				filActual = topeS;				
 			}
 			break;
-		case NORTE:
+		case NORTE:			
 			if ( filActual - pasos >= 0 )
 			{				
 				int topeN = filActual - pasos;
@@ -240,11 +220,12 @@ public class PaseoDeTortuga
 			{
 				if ( piso[f][c] == 1 ) 
 				{
-					System.out.print("*");
+//					System.out.print("*");
+					System.out.print(piso[f][c]);
 				} 
-				else 
+				else if ( piso[f][c] == 0 )
 				{
-					System.out.print(" ");
+					System.out.print("#");
 				}			
 			}
 			System.out.println();
