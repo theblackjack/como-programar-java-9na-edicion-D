@@ -13,6 +13,10 @@ public class PruebaPaseoDelCaballo
 	public static void main(String[] args) 
 	{
 		
+		System.out.println("\n\n\t\t===== PASEO DEL CABALLO =====\n");
+		
+		PaseoDelCaballo miPC = new PaseoDelCaballo();
+		miPC.IniciarPaseo();
 	}
 
 }

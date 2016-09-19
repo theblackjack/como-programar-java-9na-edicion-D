@@ -129,11 +129,41 @@ public class PaseoDeTortuga
 
 	}
 	
+	public void AjustePosicional() 
+	{
+		System.out.println("Entre en ajuste posicional\n");
+		
+		if ( actualFrente == Frente.ESTE ) 
+		{
+			colActual++;			
+		} 
+		else if ( actualFrente == Frente.OESTE )
+		{
+			colActual--;
+		}
+		else if ( actualFrente == Frente.NORTE )
+		{
+			filActual--;
+		}		
+		else 
+		{
+			filActual++;
+		}
+	}
+	
 	public boolean mover( int pasos ) 
 	{	
 		boolean hecho = false;
 		
 		pasos--;
+		
+		if ( actualFrente == anteriorFrente )  
+		{
+			if ( filActual != 0 || colActual != 0 )
+			{
+				AjustePosicional();
+			}			
+		}
 		
 		switch (actualFrente) {
 		case ESTE:
@@ -220,8 +250,8 @@ public class PaseoDeTortuga
 			{
 				if ( piso[f][c] == 1 ) 
 				{
-//					System.out.print("*");
-					System.out.print(piso[f][c]);
+					System.out.print("*");
+//					System.out.print(piso[f][c]);
 				} 
 				else if ( piso[f][c] == 0 )
 				{
