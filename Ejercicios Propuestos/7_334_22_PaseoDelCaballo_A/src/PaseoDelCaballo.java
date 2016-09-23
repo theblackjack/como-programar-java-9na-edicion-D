@@ -134,7 +134,9 @@ public class PaseoDelCaballo
 				}												
 			}	
 			System.out.println();
-		}		
+		}
+		
+//		System.out.println("\n\ntablero[0].length = "+tablero[0].length);
 	}	
 
 }
